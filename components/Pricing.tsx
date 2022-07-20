@@ -1,6 +1,13 @@
 import React, { useState } from "react";
-import Image from "next/future/image";
 
+const PaymentLinks = {
+  free: "https://buy.stripe.com/cN29DCdmHeeW5B6cMT",
+  mon_pro: "https://buy.stripe.com/fZeeXW82nc6Oe7C9AG",
+  mon_super: "https://buy.stripe.com/dR6176bez9YGaVqbIN",
+  year_pro: "https://buy.stripe.com/eVacPO0zVb2KgfK9AE",
+  year_super: "https://buy.stripe.com/eVa3fe3M71sabZufZ1"
+};
+const ChatLink = `https://calendly.com/hansu`;
 type PriceInfo = {
   billingType: "month" | "annual";
   smallSite?: boolean;
@@ -8,7 +15,6 @@ type PriceInfo = {
   price?: number;
   priceIntro?: string;
   paymentLink: string;
-  chatLink: string;
   features?: {
     description: string;
     list: string[];
@@ -21,7 +27,6 @@ const Col = ({
   type = "Freemium",
   price = 0,
   paymentLink,
-  chatLink,
   features = {
     description: "Everything is free to use:",
     list: [
@@ -54,7 +59,7 @@ const Col = ({
           <a href={paymentLink} className="btn-primary text-center">
             Get started
           </a>
-          <a href={chatLink} className="btn-primary btn-ghost text-center">
+          <a href={ChatLink} className="btn-primary btn-ghost text-center">
             Chat to sales
           </a>
         </div>
@@ -107,11 +112,10 @@ function Pricing() {
         </button>
       </div>
       <ul className="flex gap-8 pb-24 border-b">
-        <Col billingType={billingType} smallSite paymentLink="#" chatLink="#" />
+        <Col billingType={billingType} smallSite paymentLink={PaymentLinks.free} />
         <Col
           billingType={billingType}
-          paymentLink="#"
-          chatLink="#"
+          paymentLink={billingType === "month" ? PaymentLinks.mon_pro : PaymentLinks.year_pro}
           type="Pro"
           price={billingType === "month" ? 12 : 120}
           priceIntro="Premium features for up to 100 users."
@@ -128,8 +132,7 @@ function Pricing() {
         />
         <Col
           billingType={billingType}
-          paymentLink="#"
-          chatLink="#"
+          paymentLink={billingType === "month" ? PaymentLinks.mon_super : PaymentLinks.year_super}
           type="Supreme"
           price={billingType === "month" ? 99 : 1099}
           priceIntro="Advanced features + unlimited users."
